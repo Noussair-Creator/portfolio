@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql zip
 
-# Copy application files
+# Copy application files from the current context
 COPY . .
 
 # Copy installed dependencies and built assets from previous stages
@@ -49,15 +49,12 @@ COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Run final setup commands
-RUN php artisan storage:link
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
-
 # Set correct file permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
+
+# Create the storage link
+RUN php artisan storage:link
 
 # Expose port 80 for Nginx
 EXPOSE 80
