@@ -1,11 +1,10 @@
-# Stage 1: Install PHP dependencies with Composer
-FROM composer:2 as vendor
+# Stage 1: Install PHP dependencies
+FROM composer:2.5 as vendor
 WORKDIR /app
-COPY database/ database/
-COPY composer.json composer.lock ./
+COPY . .
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-# Stage 2: Build frontend assets with Node.js
+# Stage 2: Build frontend assets
 FROM node:18 as node_assets
 WORKDIR /app
 COPY . .
@@ -35,13 +34,11 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql zip
 
-# Copy application files
+# Copy application files from the current context
 COPY . .
 
-# Copy Composer dependencies from the first stage
+# Copy installed dependencies and built assets from previous stages
 COPY --from=vendor /app/vendor/ ./vendor/
-
-# Copy built frontend assets from the second stage
 COPY --from=node_assets /app/public/build ./public/build
 
 # Copy Nginx and Supervisor configuration files
