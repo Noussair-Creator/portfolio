@@ -29,13 +29,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /app
 
-# Copy composer files and install dependencies
-COPY database/ database/
-COPY composer.json composer.lock ./
-RUN composer install --no-interaction --optimize-autoloader --no-dev
-
-# Copy the rest of the application files
+# --- THIS IS THE FIX ---
+# 1. Copy ALL application files first
 COPY . .
+
+# 2. NOW run composer install, since the 'artisan' file is present
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+# --- END OF FIX ---
+
 
 # --- Build Node Assets ---
 FROM node:18 as node_assets
