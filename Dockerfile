@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql zip
 
-# Copy application files from the current context
+# Copy application files
 COPY . .
 
 # Copy installed dependencies and built assets from previous stages
@@ -45,6 +45,16 @@ COPY --from=node_assets /app/public/build ./public/build
 COPY docker/nginx/default.conf /etc/nginx/sites-available/default
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Copy the entrypoint script and make it executable
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Run final setup commands
+RUN php artisan storage:link
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
+
 # Set correct file permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
@@ -52,5 +62,5 @@ RUN chmod -R 775 /app/storage /app/bootstrap/cache
 # Expose port 80 for Nginx
 EXPOSE 80
 
-# Start Supervisor to manage Nginx and PHP-FPM
-CMD ["/usr/bin/supervisord"]
+# Use the entrypoint script to start the container
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
