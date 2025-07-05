@@ -1,45 +1,85 @@
-<p align="center"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></p>
+# Dynamic Portfolio & Blog with Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a full-stack, dynamic personal portfolio website built from the ground up using Laravel 10. The project features a complete, secure admin panel for managing all site content, a public-facing portfolio and blog, and a modern, responsive design.
 
-## About This Project
+## Key Features
 
-This is my personal portfolio website, built to showcase my work, skills, and experience as a developer. The project is designed to be clean, responsive, and easy to maintain.
+### Public-Facing Site
+- **Modern Home Page**: A fully responsive hero section with a profile picture, bio, and social media links.
+- **Projects Showcase**: A dedicated page to display all projects, with the ability to filter them by tags/categories.
+- **Blog System**: A clean, paginated blog index and individual post pages to share articles and tutorials.
+- **Contact Form**: A working contact form with server-side validation that sends email notifications to the admin.
+- **Dynamic SEO**: Meta titles and descriptions are dynamically generated for each page to improve search engine visibility.
+- **Animations & Dark Mode**: Smooth on-scroll animations and a persistent dark mode toggle for an enhanced user experience.
 
-## Tools & Technologies Used
+### Admin Panel
+- **Secure Dashboard**: An admin-only area protected by Laravel's authentication system.
+- **Content Management (CRUD)**: Full Create, Read, Update, and Delete functionality for:
+  - Projects (with image uploads and tag assignment)
+  - Blog Posts (with a rich text editor and publishing status)
+  - Tags
+- **Profile Management**: Easily update personal info, profile photo, subtitle, social media links, and upload a CV/resume.
+- **Responsive Design**: The admin panel is also responsive, with a hamburger menu for mobile devices.
+- **Rich Text Editor**: Uses TinyMCE for a WYSIWYG experience when writing blog posts and project descriptions.
 
-- **[Laravel](https://laravel.com/):** PHP web application framework for backend development.
-- **[Blade](https://laravel.com/docs/blade):** Laravel's templating engine for building dynamic views.
-- **[MySQL](https://www.mysql.com/):** Relational database for storing project and contact data.
-- **[Bootstrap](https://getbootstrap.com/):** CSS framework for responsive design.
-- **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript):** For interactive UI components.
-- **[Composer](https://getcomposer.org/):** Dependency management for PHP.
-- **[Git](https://git-scm.com/):** Version control.
+## Tech Stack
+- **Backend**: Laravel 10, PHP 8+
+- **Frontend**: Blade, Tailwind CSS, Alpine.js
+- **Database**: MySQL (local), PostgreSQL (production)
+- **Development Environment**: Vite
+- **Deployment**: Configured for deployment on platforms like Render.
 
-## Features
+## Local Setup & Installation
 
-- Project showcase with images and descriptions
-- Contact form with email notifications
-- Responsive design for mobile and desktop
-- Easy to add or update portfolio items
+To run this project on your local machine, follow these steps:
 
-## Getting Started
+1. Clone the repository:
+	```bash
+	git clone https://github.com/your-username/your-repo-name.git
+	cd your-repo-name
+	```
 
-1. Clone the repository.
-2. Run `composer install` to install PHP dependencies.
-3. Copy `.env.example` to `.env` and set your environment variables.
-4. Run `php artisan migrate` to set up the database.
-5. Start the development server with `php artisan serve`.
+2. Install dependencies:
+	```bash
+	composer install
+	npm install
+	```
 
-## Contributing
+3. Create your environment file:
+	```bash
+	cp .env.example .env
+	```
 
-Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
+4. Generate an application key:
+	```bash
+	php artisan key:generate
+	```
+
+5. Configure your `.env` file:  
+   Update your database credentials (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`) and any other necessary settings.
+
+6. Run database migrations and seeders:  
+   This will create the database schema and populate it with the admin user and initial tags.
+	```bash
+	php artisan migrate --seed
+	```
+
+7. Compile frontend assets:
+	```bash
+	npm run dev
+	```
+
+8. Create the storage link:
+	```bash
+	php artisan storage:link
+	```
+
+9. Serve the application:
+	```bash
+	php artisan serve
+	```
+	You can now access the application at [http://localhost:8000](http://localhost:8000). Log in to the admin panel at `/login` with the credentials from your UserSeeder (default is `admin@example.com` / `password`).
 
 ## License
 
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the MIT license.
