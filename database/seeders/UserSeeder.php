@@ -13,10 +13,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com', // Use your own email
-            'password' => Hash::make('admin@example.com'), // Choose a secure password
-        ]);
+        // Check if the admin user already exists
+        if (!User::where('email', 'admin@example.com')->exists()) {
+            // If not, create the user
+            User::create([
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'), // Use a secure password
+            ]);
+        }
     }
 }

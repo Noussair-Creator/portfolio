@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Project;
-use App\Models\Tag;
+// We no longer need the Project and Tag models here for seeding
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,24 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call all necessary seeders here, in the correct order
+        // This will run the seeders that create the essential starting data.
         $this->call([
             UserSeeder::class,
-            TagSeeder::class, // <-- ADD THIS LINE
+            TagSeeder::class,
+            // We are no longer creating fake projects in production.
+            // You will add your real projects through the admin panel.
         ]);
-
-        // Now that TagSeeder has run, fetch the tags that were created
-        $tags = Tag::all();
-
-        // Check if tags exist before creating projects to avoid errors
-        if ($tags->isNotEmpty()) {
-            // Create 10 projects and attach 1-3 random tags to each
-            Project::factory(10)->create()->each(function ($project) use ($tags) {
-                $project->tags()->attach(
-                    // This prevents asking for more tags than exist
-                    $tags->random(rand(1, min(3, $tags->count())))->pluck('id')->toArray()
-                );
-            });
-        }
     }
 }
