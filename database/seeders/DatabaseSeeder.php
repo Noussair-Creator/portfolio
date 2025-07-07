@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-// We no longer need the Project and Tag models here for seeding
+// We no longer need the Project model here for seeding
 
 class DatabaseSeeder extends Seeder
 {

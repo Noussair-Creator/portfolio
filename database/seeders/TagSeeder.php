@@ -8,15 +8,19 @@ use Illuminate\Support\Str;
 
 class TagSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        $tags = ['Laravel', 'PHP', 'JavaScript', 'Vue.js', 'React', 'Tailwind CSS'];
+        $tags = ['Laravel', 'PHP', 'JavaScript', 'Vue.js', 'React', 'Tailwind CSS', 'Next.js', 'API Development'];
 
         foreach ($tags as $tagName) {
-            Tag::create([
-                'name' => $tagName,
-                'slug' => Str::slug($tagName),
-            ]);
+            // Use firstOrCreate to prevent creating duplicate tags
+            Tag::firstOrCreate(
+                ['slug' => Str::slug($tagName)],
+                ['name' => $tagName]
+            );
         }
     }
 }
